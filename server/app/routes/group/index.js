@@ -7,3 +7,4 @@ router.get('/', function(req, res, next){
   .then(foundGroups => res.send(foundGroups))
   .catch(next)
 })
+

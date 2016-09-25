@@ -1,5 +1,4 @@
 'use strict';
-var _ = require('lodash');
 var Sequelize = require('sequelize');
 var watson = require('watson-developer-cloud')
 var db = require('../_db');

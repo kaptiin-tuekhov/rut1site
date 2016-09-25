@@ -23,7 +23,7 @@ app.config(function($stateProvider) {
                 var text = JSON.parse($scope.user.text)
                 $scope.user.text = parsePosts(text)
                 UserFactory.createUser($scope.user)
-                .then(() => $scope.submitted = true)
+                    .then(() => $scope.submitted = true)
             }
         }
     });
