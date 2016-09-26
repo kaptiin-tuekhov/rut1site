@@ -46,7 +46,7 @@ router.get('/:groupId/:comparisonId', function(req, res, next) {
           _.each(foundUsers, (user, index) => {
             user.watsonProfile = profiles[index];
           })
-          
+
           // similarity analysis -> compare each user's personality to all other users' personalities and store results
           _.each(foundUsers, user => {
             user.dataValues.prefs = [];
@@ -55,7 +55,7 @@ router.get('/:groupId/:comparisonId', function(req, res, next) {
               if (user.name !== otherUser.name){
                 user.dataValues.prefs.push({
                   name: otherUser.name,
-                  similarity: similarity(user.watsonProfile, otherUser.watsonProfile, 1)
+                  similarity: similarity(user.watsonProfile, otherUser.watsonProfile, req.params.comparisonId)
                 })
               }
             })
