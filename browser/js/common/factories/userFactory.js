@@ -6,8 +6,8 @@ app.factory('UserFactory', function($http){
             return res.data
         })
     }
-    userObj.getGroupUsers = function(groupId) {
-        return $http.get('/api/users/' + groupId)
+    userObj.getGroupUsers = function(groupId, categoryId) {
+        return $http.get('/api/users/' + groupId + '/' + categoryId)
         .then(res => {
             return res.data
         })

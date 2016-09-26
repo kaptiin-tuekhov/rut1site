@@ -25,7 +25,7 @@ router.post('/', function(req, res, next) {
     .catch(next)
 })
 
-router.get('/:groupId', function(req, res, next) {
+router.get('/:groupId/:comparisonId', function(req, res, next) {
   User.findAll({
       where: {
         groupId: req.params.groupId
@@ -46,7 +46,7 @@ router.get('/:groupId', function(req, res, next) {
           _.each(foundUsers, (user, index) => {
             user.watsonProfile = profiles[index];
           })
-
+          
           // similarity analysis -> compare each user's personality to all other users' personalities and store results
           _.each(foundUsers, user => {
             user.dataValues.prefs = [];
