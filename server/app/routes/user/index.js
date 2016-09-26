@@ -10,10 +10,15 @@ var Promise = require("bluebird");
 var profile = Promise.promisify(personalityInsights.profile, {
   context: personalityInsights
 })
-module.exports = router
 var stablerms = require('./stableRoommate_js')
 var similarity = require('../../utils').similarity
 var pairing = require('../../utils').pairing
+var _ = require('lodash')
+
+
+
+module.exports = router
+
 router.post('/', function(req, res, next) {
   User.create(req.body)
     .then(createdUser => res.send(createdUser))
@@ -27,18 +32,23 @@ router.get('/:groupId', function(req, res, next) {
       }
     })
     .then(foundUsers => {
+      // create array of promises returned by watson personality analysis of each user
       var promArray = [];
       foundUsers.forEach(foundUser => {
         promArray.push(profile({
           text: foundUser.text
         }))
       })
+
+      // add watson profiles to user objects
       var prefTable = {}
       Promise.all(promArray)
         .then(profileArray => {
           foundUsers.forEach((foundUser, i) => {
             foundUser.watsonProfile = profileArray[i]
           })
+
+          // determine similarity between users
           foundUsers.forEach(foundUser => {
             foundUser.dataValues.similarityArray = [];
             for (var index = 0; index < foundUsers.length; index++) {
@@ -51,13 +61,16 @@ router.get('/:groupId', function(req, res, next) {
                 })
               }
             }
-            foundUser.dataValues.similarityArray = foundUser.dataValues.similarityArray.sort((simuserA, simuserB) => {
-              return simuserB.similarity - simuserA.similarity
-            })
-            foundUser.dataValues.similarityNameArray = [];
-            foundUser.dataValues.similarityArray.forEach((simObj) => foundUser.dataValues.similarityNameArray.push(simObj.name))
-            prefTable[foundUser.name] = foundUser.dataValues.similarityNameArray
+
+            foundUser.dataValues.similarityArray = _.chain(foundUser.dataValues.similarityArray)
+              .sort((simuserA, simuserB) => simuserB.similarity - simuserA.similarity)
+              .map(similarityObj => similarityObj.name)
+              .value();
+
+            prefTable[foundUser.name] = foundUser.dataValues.similarityArray;
           })
+
+          // run stable roommates algorithm on pref table created via watson + similarity comparison
           var results = pairing(prefTable)
           var resultsJSON = {}
           for (var index = 0; index < results.length; index++) {
