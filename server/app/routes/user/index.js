@@ -20,7 +20,7 @@ router.post('/', function(req, res, next) {
     .catch(next)
 })
 
-router.get('/:groupId', function(req, res, next) {
+router.get('/:groupId/:comparisonId', function(req, res, next) {
   User.findAll({
       where: {
         groupId: req.params.groupId
@@ -44,7 +44,7 @@ router.get('/:groupId', function(req, res, next) {
             for (var index = 0; index < foundUsers.length; index++) {
               var simuser = foundUsers[index];
               if (foundUser.name !== simuser.name) {
-                var sim = similarity(foundUser.watsonProfile, simuser.watsonProfile, 1)
+                var sim = similarity(foundUser.watsonProfile, simuser.watsonProfile, req.params.comparisonId)
                 foundUser.dataValues.similarityArray.push({
                   name: simuser.name,
                   similarity: sim
