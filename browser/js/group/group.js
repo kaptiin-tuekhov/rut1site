@@ -4,12 +4,15 @@ app.config(function($stateProvider) {
       url: '/group/:groupId',
       templateUrl: 'js/group/group.html',
       resolve: {
-        group: function(UserFactory, $stateParams) {
+        groupUsers: function(UserFactory, $stateParams) {
           return UserFactory.getGroupUsers($stateParams.groupId)
+        },
+        group: function(GroupFactory, $stateParams){
+          return GroupFactory.getOne($stateParams.groupId)
         }
       },
-      controller: function(group, $scope) {
-        console.log(group)
+      controller: function(group, groupUsers, $scope) {
+        $scope.groupUsers = groupUsers;
         $scope.group = group;
       }
     })

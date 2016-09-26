@@ -7,5 +7,12 @@ app.factory('GroupFactory', function($http){
         })
     }
 
+    homeObj.getOne = function(id) {
+    	return $http.get('/api/groups/' + id)
+    	.then(foundGroup => {
+    		return foundGroup.data
+    	})
+    }
+
     return homeObj
 })

@@ -4,6 +4,7 @@
 
 body {
   background: #fdfdfd;
+  font-family: 'Archivo Black', sans-serif;
 }
 
 @mixin clearfix {
@@ -24,3 +25,4 @@ body {
 @import 'about/main';
 @import 'tutorial/main';
 @import 'login/main';
+@import 'group/main';
