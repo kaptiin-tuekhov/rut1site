@@ -11,7 +11,7 @@ var ENABLED_AUTH_STRATEGIES = [
     //'google'
 ];
 
-module.exports = function (app, db) {
+//module.exports = function (app, db) {
 
     var dbStore = new SequelizeStore({
         db: db
