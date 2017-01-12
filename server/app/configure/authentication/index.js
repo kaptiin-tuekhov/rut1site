@@ -11,7 +11,7 @@ var ENABLED_AUTH_STRATEGIES = [
     //'google'
 ];
 
-//module.exports = function (app, db) {
+module.exports = function (app, db) {
 
     var dbStore = new SequelizeStore({
         db: db
@@ -54,22 +54,22 @@ var ENABLED_AUTH_STRATEGIES = [
     // We provide a simple GET /session in order to get session information directly.
     // This is used by the browser application (Angular) to determine if a user is
     // logged in already.
-    app.get('/session', function (req, res, next) {
-        var err;
-        if (req.user) {
-            res.send({ user: req.user.sanitize() });
-        } else {
-            err = new Error('No authenticated user.');
-            err.status = 401;
-            next(err);
-        }
-    });
+    //app.get('/session', function (req, res, next) {
+     //   var err;
+       // if (req.user) {
+         //   res.send({ user: req.user.sanitize() });
+        //} else {
+          //  err = new Error('No authenticated user.');
+            //err.status = 401;
+          //  next(err);
+      //  }
+    //});
 
     // Simple /logout route.
-    app.get('/logout', function (req, res) {
-        req.logout();
-        res.status(200).end();
-    });
+    //app.get('/logout', function (req, res) {
+      //  req.logout();
+     //   res.status(200).end();
+    //});
 
     // Each strategy enabled gets registered.
     ENABLED_AUTH_STRATEGIES.forEach(function (strategyName) {
